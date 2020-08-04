@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Sail ship.obj-f005a1599667126a453a63addeba9ddd.mesh"
+
+[deps]
+
+files=[ "res://.import/Sail ship.obj-f005a1599667126a453a63addeba9ddd.mesh" ]
+
+source_file="res://Assets/Sail ship.obj"
+dest_files=[ "res://.import/Sail ship.obj-f005a1599667126a453a63addeba9ddd.mesh", "res://.import/Sail ship.obj-f005a1599667126a453a63addeba9ddd.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

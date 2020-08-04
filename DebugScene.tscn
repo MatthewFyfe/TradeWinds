@@ -1,0 +1,162 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Assets/PalmTree_1.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://Assets/PalmTree_3.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Assets/PalmTree_4.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://Assets/PalmTree_2.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://Assets/Sail ship.obj" type="ArrayMesh" id=5]
+[ext_resource path="res://Ship.gd" type="Script" id=6]
+[ext_resource path="res://Controls.gd" type="Script" id=7]
+
+[sub_resource type="Environment" id=1]
+ambient_light_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Shader" id=2]
+code = "/**
+ * Water shader for ocean waves effect
+ */
+shader_type spatial;
+
+uniform vec4 out_colour : hint_color = vec4(0.0, 0.2, 1.0, 1.0);
+uniform float amount : hint_range(0.2, 1.5) = 0.8;
+uniform float beer_factor = 0.2;
+
+// Helper for applyDistortion
+float generateOffset(float x, float z, float val1, float val2, float time) {
+	//float amount = 0.8;
+	float speed = 1.0;
+	
+	float radiansX = ((mod(x + z * x * val1, amount) / amount) + (time * speed) * mod(x * 0.8 + z, 1.5)) * 2.0 * 3.14;
+	float radiansZ = ((mod(val2 * (z * x + x * z), amount) / amount) + (time*speed) * 2.0 * mod(x,2.0)) * 2.0 * 3.14;
+	
+	return amount * 0.5 * (sin(radiansZ) + cos(radiansX));
+}
+
+// Create wave effects on the surface by distorting vertex positions
+vec3 applyDistortion(vec3 vertex, float time) {
+	float xd = generateOffset(vertex.x, vertex.z, 0.2, 0.1, time);
+	float yd = generateOffset(vertex.x, vertex.z, 0.1, 0.3, time);
+	float zd = generateOffset(vertex.x, vertex.z, 0.15, 0.2, time);
+	return vertex + vec3(xd, yd, zd);
+}
+
+// Vertex Shader
+void vertex() {
+	VERTEX = applyDistortion(VERTEX, TIME * 0.1);
+}
+
+// Fragment Shader
+void fragment() {
+	NORMAL = normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
+	METALLIC = 0.6;
+	SPECULAR = 0.5;
+	ROUGHNESS = 0.2;
+	ALBEDO = out_colour.xyz;
+	
+	// Apply Beer's Law for neat transparancy effect
+	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+	
+	depth = depth * 2.0 - 1.0;
+	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
+	depth = depth + VERTEX.z;
+	
+	depth = exp(-depth * beer_factor);
+	ALPHA = clamp(1.0 - depth, 0.0, 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/out_colour = Color( 0, 0.466667, 0.745098, 1 )
+shader_param/amount = 0.8
+shader_param/beer_factor = 0.8
+
+[sub_resource type="PlaneMesh" id=4]
+material = SubResource( 3 )
+size = Vector2( 100, 100 )
+subdivide_width = 50
+subdivide_depth = 50
+
+[sub_resource type="SphereMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.760784, 0.698039, 0.501961, 1 )
+
+[sub_resource type="SphereShape" id=7]
+
+[sub_resource type="CylinderShape" id=8]
+
+[node name="BJam2020" type="Spatial"]
+script = ExtResource( 7 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 50, 40 )
+environment = SubResource( 1 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+
+[node name="WaterMesh" type="MeshInstance" parent="."]
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="IslandTest" type="MeshInstance" parent="."]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -5, -2.5, 5 )
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
+[node name="PalmTree_1" type="MeshInstance" parent="IslandTest"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.823058, 0 )
+mesh = ExtResource( 1 )
+material/0 = null
+material/1 = null
+material/2 = null
+
+[node name="PalmTree_2" type="MeshInstance" parent="IslandTest"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.312076, 0.879567, -0.235637 )
+mesh = ExtResource( 4 )
+material/0 = null
+material/1 = null
+material/2 = null
+
+[node name="PalmTree_3" type="MeshInstance" parent="IslandTest"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.610084, 0.639938, -0.140923 )
+mesh = ExtResource( 2 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+
+[node name="PalmTree_4" type="MeshInstance" parent="IslandTest"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.339306, 0.800764, 0.163203 )
+mesh = ExtResource( 3 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+
+[node name="StaticBody" type="StaticBody" parent="IslandTest"]
+
+[node name="CollisionShape" type="CollisionShape" parent="IslandTest/StaticBody"]
+shape = SubResource( 7 )
+
+[node name="KinBodyShip" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10 )
+script = ExtResource( 6 )
+
+[node name="Sail ship" type="MeshInstance" parent="KinBodyShip"]
+mesh = ExtResource( 5 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+material/9 = null
+material/10 = null
+material/11 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="KinBodyShip"]
+transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
+shape = SubResource( 8 )
