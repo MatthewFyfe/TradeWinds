@@ -133,13 +133,13 @@ material/1 = null
 material/2 = null
 material/3 = null
 
-[node name="StaticBody" type="StaticBody" parent="IslandTest"]
+[node name="Sandbar" type="StaticBody" parent="IslandTest"]
 
-[node name="CollisionShape" type="CollisionShape" parent="IslandTest/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="IslandTest/Sandbar"]
 shape = SubResource( 7 )
 
 [node name="KinBodyShip" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5 )
 script = ExtResource( 6 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip"]
@@ -158,5 +158,28 @@ material/10 = null
 material/11 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="KinBodyShip"]
+transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
+shape = SubResource( 8 )
+
+[node name="KinBodyShip2" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -5 )
+script = ExtResource( 6 )
+
+[node name="Sail ship" type="MeshInstance" parent="KinBodyShip2"]
+mesh = ExtResource( 5 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+material/9 = null
+material/10 = null
+material/11 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="KinBodyShip2"]
 transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
 shape = SubResource( 8 )
