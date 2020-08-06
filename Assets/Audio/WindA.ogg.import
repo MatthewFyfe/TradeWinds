@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/WindA.ogg-fd87e6495616cf79033065a2f9957392.oggstr"
+
+[deps]
+
+source_file="res://Assets/Audio/WindA.ogg"
+dest_files=[ "res://.import/WindA.ogg-fd87e6495616cf79033065a2f9957392.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

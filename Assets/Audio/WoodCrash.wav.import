@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/WoodCrash.wav-c85f0b5710dd087543a3bdb55ddc3bcd.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/WoodCrash.wav"
+dest_files=[ "res://.import/WoodCrash.wav-c85f0b5710dd087543a3bdb55ddc3bcd.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

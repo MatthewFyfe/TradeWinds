@@ -1,19 +1,35 @@
+# Controls and Game Logic
 extends Spatial
 
 var windTimer = 0
+var goalCount = 0
+export var goalLimit = 2
 
 onready var progressWind = find_node("ProgressWind")
 onready var windReady = find_node("WindReady")
+onready var windGustFX = find_node("WindGust")
+onready var sailsFX = find_node("Sails")
 
 #Every physics tick (built in function)
+# warning-ignore:unused_argument
 func _physics_process(delta):
 	if(windTimer >= 0):
 		windReady.hide()
 		windTimer -= 1
 	else:
 		windReady.show()
+		windGustFX.stop()
+		#sailsFX.stop()
+		
 	#Update wind progress bar
 	progressWind.value = 100-windTimer
+	#Update goal counter
+	find_node("GoalCount").set_text("Goal " + str(goalCount))
+	#Check win condition
+	if(goalCount >= goalLimit):
+		print("win")
+		var popup = find_node("Popup")
+		popup.show()
 
 #Check for input (built in function)
 func _input(event):
@@ -55,3 +71,6 @@ func _on_Button_W_pressed():
 
 func _on_Button_E_pressed():
 	inputHelper("Right")
+
+func add_goalCount(value):
+	goalCount += value

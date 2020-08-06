@@ -1,90 +1,39 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=22 format=2]
 
-[ext_resource path="res://Assets/PalmTree_1.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://Assets/PalmTree_3.obj" type="ArrayMesh" id=2]
-[ext_resource path="res://Assets/PalmTree_4.obj" type="ArrayMesh" id=3]
-[ext_resource path="res://Assets/PalmTree_2.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://Scenes/SandIsland.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/PortTown.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/WaterMesh.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/KinBodyShip.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Sail ship.obj" type="ArrayMesh" id=5]
 [ext_resource path="res://Scripts/Ship.gd" type="Script" id=6]
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=7]
-[ext_resource path="res://icon.png" type="Texture" id=8]
+[ext_resource path="res://Assets/windIcon.png" type="Texture" id=8]
+[ext_resource path="res://Scenes/RockCluster.tscn" type="PackedScene" id=9]
+[ext_resource path="res://WindButtonFont.tres" type="DynamicFont" id=10]
+[ext_resource path="res://Assets/Audio/BeachAmbience.ogg" type="AudioStream" id=11]
+[ext_resource path="res://Assets/Audio/WindA.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Assets/Audio/WoodCrash.wav" type="AudioStream" id=13]
+[ext_resource path="res://Assets/Audio/Bubbles.wav" type="AudioStream" id=14]
+[ext_resource path="res://Assets/Audio/Sails.wav" type="AudioStream" id=15]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="Shader" id=2]
-code = "/**
- * Water shader for ocean waves effect
- */
-shader_type spatial;
+[sub_resource type="CylinderShape" id=2]
 
-uniform vec4 out_colour : hint_color = vec4(0.0, 0.2, 1.0, 1.0);
-uniform float amount : hint_range(0.2, 1.5) = 0.8;
-uniform float beer_factor = 0.2;
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://Fonts/Marcellus-Regular.ttf"
 
-// Helper for applyDistortion
-float generateOffset(float x, float z, float val1, float val2, float time) {
-	//float amount = 0.8;
-	float speed = 1.0;
-	
-	float radiansX = ((mod(x + z * x * val1, amount) / amount) + (time * speed) * mod(x * 0.8 + z, 1.5)) * 2.0 * 3.14;
-	float radiansZ = ((mod(val2 * (z * x + x * z), amount) / amount) + (time*speed) * 2.0 * mod(x,2.0)) * 2.0 * 3.14;
-	
-	return amount * 0.5 * (sin(radiansZ) + cos(radiansX));
-}
+[sub_resource type="DynamicFont" id=4]
+size = 25
+font_data = SubResource( 3 )
 
-// Create wave effects on the surface by distorting vertex positions
-vec3 applyDistortion(vec3 vertex, float time) {
-	float xd = generateOffset(vertex.x, vertex.z, 0.2, 0.1, time);
-	float yd = generateOffset(vertex.x, vertex.z, 0.1, 0.3, time);
-	float zd = generateOffset(vertex.x, vertex.z, 0.15, 0.2, time);
-	return vertex + vec3(xd, yd, zd);
-}
+[sub_resource type="DynamicFontData" id=5]
+font_path = "res://Fonts/Marcellus-Regular.ttf"
 
-// Vertex Shader
-void vertex() {
-	VERTEX = applyDistortion(VERTEX, TIME * 0.1);
-}
-
-// Fragment Shader
-void fragment() {
-	NORMAL = normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
-	METALLIC = 0.6;
-	SPECULAR = 0.5;
-	ROUGHNESS = 0.2;
-	ALBEDO = out_colour.xyz;
-	
-	// Apply Beer's Law for neat transparancy effect
-	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
-	
-	depth = depth * 2.0 - 1.0;
-	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
-	depth = depth + VERTEX.z;
-	
-	depth = exp(-depth * beer_factor);
-	ALPHA = clamp(1.0 - depth, 0.0, 1.0);
-}"
-
-[sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
-shader_param/out_colour = Color( 0, 0.466667, 0.745098, 1 )
-shader_param/amount = 0.8
-shader_param/beer_factor = 0.8
-
-[sub_resource type="PlaneMesh" id=4]
-material = SubResource( 3 )
-size = Vector2( 100, 100 )
-subdivide_width = 50
-subdivide_depth = 50
-
-[sub_resource type="SphereMesh" id=5]
-
-[sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.760784, 0.698039, 0.501961, 1 )
-
-[sub_resource type="SphereShape" id=7]
-
-[sub_resource type="CylinderShape" id=8]
+[sub_resource type="DynamicFont" id=6]
+size = 30
+font_data = SubResource( 5 )
 
 [node name="BJam2020" type="Spatial"]
 script = ExtResource( 7 )
@@ -95,155 +44,10 @@ environment = SubResource( 1 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 
-[node name="WaterMesh" type="MeshInstance" parent="."]
-mesh = SubResource( 4 )
-material/0 = null
-
-[node name="IslandTest" type="MeshInstance" parent="."]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -5, -2.5, 5 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
-
-[node name="PalmTree_1" type="MeshInstance" parent="IslandTest"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.823058, 0 )
-mesh = ExtResource( 1 )
-material/0 = null
-material/1 = null
-material/2 = null
-
-[node name="PalmTree_2" type="MeshInstance" parent="IslandTest"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.312076, 0.879567, -0.235637 )
-mesh = ExtResource( 4 )
-material/0 = null
-material/1 = null
-material/2 = null
-
-[node name="PalmTree_3" type="MeshInstance" parent="IslandTest"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.610084, 0.639938, -0.140923 )
-mesh = ExtResource( 2 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-
-[node name="PalmTree_4" type="MeshInstance" parent="IslandTest"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.339306, 0.800764, 0.163203 )
-mesh = ExtResource( 3 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-
-[node name="Sandbar" type="StaticBody" parent="IslandTest"]
-
-[node name="CollisionShape" type="CollisionShape" parent="IslandTest/Sandbar"]
-shape = SubResource( 7 )
-
-[node name="IslandTest2" type="MeshInstance" parent="."]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -15, -2.5, 5 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
-
-[node name="PalmTree_1" type="MeshInstance" parent="IslandTest2"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.823058, 0 )
-mesh = ExtResource( 1 )
-material/0 = null
-material/1 = null
-material/2 = null
-
-[node name="PalmTree_2" type="MeshInstance" parent="IslandTest2"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.312076, 0.879567, -0.235637 )
-mesh = ExtResource( 4 )
-material/0 = null
-material/1 = null
-material/2 = null
-
-[node name="PalmTree_3" type="MeshInstance" parent="IslandTest2"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.610084, 0.639938, -0.140923 )
-mesh = ExtResource( 2 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-
-[node name="PalmTree_4" type="MeshInstance" parent="IslandTest2"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.339306, 0.800764, 0.163203 )
-mesh = ExtResource( 3 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-
-[node name="Sandbar" type="StaticBody" parent="IslandTest2"]
-
-[node name="CollisionShape" type="CollisionShape" parent="IslandTest2/Sandbar"]
-shape = SubResource( 7 )
-
-[node name="IslandTest3" type="MeshInstance" parent="."]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -15, -2.5, 25 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
-
-[node name="PalmTree_1" type="MeshInstance" parent="IslandTest3"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.823058, 0 )
-mesh = ExtResource( 1 )
-material/0 = null
-material/1 = null
-material/2 = null
-
-[node name="PalmTree_2" type="MeshInstance" parent="IslandTest3"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.312076, 0.879567, -0.235637 )
-mesh = ExtResource( 4 )
-material/0 = null
-material/1 = null
-material/2 = null
-
-[node name="PalmTree_3" type="MeshInstance" parent="IslandTest3"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.610084, 0.639938, -0.140923 )
-mesh = ExtResource( 2 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-
-[node name="PalmTree_4" type="MeshInstance" parent="IslandTest3"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.339306, 0.800764, 0.163203 )
-mesh = ExtResource( 3 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-
-[node name="Sandbar" type="StaticBody" parent="IslandTest3"]
-
-[node name="CollisionShape" type="CollisionShape" parent="IslandTest3/Sandbar"]
-shape = SubResource( 7 )
-
-[node name="KinBodyShip" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5 )
-script = ExtResource( 6 )
-
-[node name="Sail ship" type="MeshInstance" parent="KinBodyShip"]
-mesh = ExtResource( 5 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-material/4 = null
-material/5 = null
-material/6 = null
-material/7 = null
-material/8 = null
-material/9 = null
-material/10 = null
-material/11 = null
-
-[node name="CollisionShape" type="CollisionShape" parent="KinBodyShip"]
-transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
-shape = SubResource( 8 )
+[node name="KinBodyShip" parent="." instance=ExtResource( 4 )]
 
 [node name="KinBodyShip2" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -5 )
 script = ExtResource( 6 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip2"]
@@ -263,7 +67,7 @@ material/11 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="KinBodyShip2"]
 transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
-shape = SubResource( 8 )
+shape = SubResource( 2 )
 
 [node name="GUI" type="Control" parent="."]
 anchor_right = 1.0
@@ -279,6 +83,7 @@ margin_left = -30.0
 margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 60, 30 )
+custom_fonts/font = ExtResource( 10 )
 text = "NORTH"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -293,6 +98,7 @@ margin_left = -30.0
 margin_top = -30.0
 margin_right = 30.0
 rect_min_size = Vector2( 60, 30 )
+custom_fonts/font = ExtResource( 10 )
 text = "SOUTH"
 
 [node name="Button_W" type="Button" parent="GUI"]
@@ -302,6 +108,7 @@ margin_top = -15.0
 margin_right = 60.0
 margin_bottom = 15.0
 rect_min_size = Vector2( 60, 30 )
+custom_fonts/font = ExtResource( 10 )
 text = "WEST"
 
 [node name="Button_E" type="Button" parent="GUI"]
@@ -313,6 +120,7 @@ margin_left = -60.0
 margin_top = -15.0
 margin_bottom = 15.0
 rect_min_size = Vector2( 60, 30 )
+custom_fonts/font = ExtResource( 10 )
 text = "EAST"
 
 [node name="ProgressWind" type="ProgressBar" parent="GUI"]
@@ -328,7 +136,92 @@ __meta__ = {
 
 [node name="WindReady" type="Sprite" parent="GUI"]
 position = Vector2( 24, 51 )
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
+
+[node name="GoalCount" type="Label" parent="GUI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -117.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+custom_fonts/font = SubResource( 4 )
+text = "Goals: 0"
+align = 1
+valign = 1
+
+[node name="Popup" type="Popup" parent="GUI"]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -100.0
+margin_right = 250.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 500, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="GUI/Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.298039, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GUI/Popup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.5
+margin_top = -19.5
+margin_right = 66.5
+margin_bottom = 19.5
+custom_fonts/font = SubResource( 6 )
+text = "YOU WIN"
+
+[node name="Terrain" type="Node" parent="."]
+
+[node name="WaterMesh" parent="Terrain" instance=ExtResource( 3 )]
+
+[node name="SandIsland" parent="Terrain" instance=ExtResource( 1 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 15, -2.5, 5 )
+
+[node name="SandIsland2" parent="Terrain" instance=ExtResource( 1 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -25, -2.5, 5 )
+
+[node name="RockCluster" parent="Terrain" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5 )
+
+[node name="RockCluster2" parent="Terrain" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -15 )
+
+[node name="PortTown" parent="Terrain" instance=ExtResource( 2 )]
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="OceanAmbience" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 11 )
+volume_db = -10.0
+autoplay = true
+
+[node name="WindGust" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 12 )
+
+[node name="WoodCrash" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 13 )
+volume_db = -20.0
+
+[node name="Bubbles" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 14 )
+
+[node name="Sails" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 15 )
 [connection signal="pressed" from="GUI/Button_N" to="." method="_on_Button_N_pressed"]
 [connection signal="pressed" from="GUI/Button_S" to="." method="_on_Button_S_pressed"]
 [connection signal="pressed" from="GUI/Button_W" to="." method="_on_Button_W_pressed"]

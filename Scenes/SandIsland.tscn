@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/PalmTree_1.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://Assets/PalmTree_3.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Assets/PalmTree_4.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://Assets/PalmTree_2.obj" type="ArrayMesh" id=4]
+
+[sub_resource type="SphereMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.760784, 0.698039, 0.501961, 1 )
+
+[sub_resource type="SphereShape" id=7]
+
+[node name="SandIsland" type="MeshInstance"]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -5, -2.5, 5 )
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
+[node name="PalmTree_1" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.823058, 0 )
+mesh = ExtResource( 1 )
+material/0 = null
+material/1 = null
+material/2 = null
+
+[node name="PalmTree_2" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.312076, 0.879567, -0.235637 )
+mesh = ExtResource( 4 )
+material/0 = null
+material/1 = null
+material/2 = null
+
+[node name="PalmTree_3" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.610084, 0.639938, -0.140923 )
+mesh = ExtResource( 2 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+
+[node name="PalmTree_4" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.339306, 0.800764, 0.163203 )
+mesh = ExtResource( 3 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+
+[node name="Sandbar" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Sandbar"]
+shape = SubResource( 7 )
