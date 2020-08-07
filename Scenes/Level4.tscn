@@ -1,24 +1,24 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=38 format=2]
 
-[ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
-[ext_resource path="res://Scripts/Ship.gd" type="Script" id=2]
-[ext_resource path="res://Assets/windIcon.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Sail ship.obj" type="ArrayMesh" id=4]
-[ext_resource path="res://Assets/Audio/WindA.ogg" type="AudioStream" id=5]
-[ext_resource path="res://Assets/Audio/WoodCrash.wav" type="AudioStream" id=6]
-[ext_resource path="res://Assets/Audio/Bubbles.wav" type="AudioStream" id=7]
-[ext_resource path="res://WindButtonFont.tres" type="DynamicFont" id=8]
-[ext_resource path="res://Assets/Audio/BeachAmbience.ogg" type="AudioStream" id=9]
-[ext_resource path="res://Assets/Audio/Sails.wav" type="AudioStream" id=10]
-[ext_resource path="res://Scenes/Prefabs/RockCluster.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Assets/Cloud8.obj" type="ArrayMesh" id=12]
-[ext_resource path="res://Scenes/WaterMesh.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Assets/Cloud1.obj" type="ArrayMesh" id=14]
-[ext_resource path="res://Scenes/Prefabs/PortTown.tscn" type="PackedScene" id=15]
-[ext_resource path="res://Scenes/Prefabs/SandIsland.tscn" type="PackedScene" id=16]
-[ext_resource path="res://Fonts/Marcellus-Regular.ttf" type="DynamicFontData" id=17]
-[ext_resource path="res://Scripts/Vikings.gd" type="Script" id=18]
-[ext_resource path="res://Assets/Viking boat.obj" type="ArrayMesh" id=19]
+[ext_resource path="res://Assets/Audio/WoodCrash.wav" type="AudioStream" id=1]
+[ext_resource path="res://Assets/Cloud8.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Assets/Audio/WindA.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Scenes/Prefabs/PortTown.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/Ship.gd" type="Script" id=5]
+[ext_resource path="res://Fonts/Marcellus-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Assets/Audio/BeachAmbience.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Scripts/Controls.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/Vikings.gd" type="Script" id=9]
+[ext_resource path="res://Assets/windIcon.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Cloud1.obj" type="ArrayMesh" id=11]
+[ext_resource path="res://Assets/Audio/Sails.wav" type="AudioStream" id=12]
+[ext_resource path="res://Assets/Audio/Bubbles.wav" type="AudioStream" id=13]
+[ext_resource path="res://WindButtonFont.tres" type="DynamicFont" id=14]
+[ext_resource path="res://Assets/Viking boat.obj" type="ArrayMesh" id=15]
+[ext_resource path="res://Assets/Sail ship.obj" type="ArrayMesh" id=16]
+[ext_resource path="res://Scenes/Prefabs/SandIsland.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/WaterMesh.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Scenes/Prefabs/RockCluster.tscn" type="PackedScene" id=19]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 1, 1, 1, 1 )
@@ -121,6 +121,12 @@ void vertex() {
 [sub_resource type="ShaderMaterial" id=7]
 shader = SubResource( 6 )
 
+[sub_resource type="CylinderShape" id=17]
+
+[sub_resource type="CylinderShape" id=18]
+
+[sub_resource type="CylinderShape" id=19]
+
 [sub_resource type="DynamicFontData" id=8]
 font_path = "res://Fonts/Marcellus-Regular.ttf"
 
@@ -136,7 +142,7 @@ size = 30
 font_data = SubResource( 10 )
 
 [sub_resource type="DynamicFont" id=12]
-font_data = ExtResource( 17 )
+font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFontData" id=13]
 font_path = "res://Fonts/Marcellus-Regular.ttf"
@@ -146,12 +152,12 @@ size = 30
 font_data = SubResource( 13 )
 
 [sub_resource type="DynamicFont" id=15]
-font_data = ExtResource( 17 )
+font_data = ExtResource( 6 )
 
 [node name="BJam2020" type="Spatial"]
-script = ExtResource( 1 )
-goalLimit = 3
-active_ships = 3
+script = ExtResource( 8 )
+goalLimit = 4
+active_ships = 4
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 50, 47 )
@@ -160,12 +166,12 @@ environment = SubResource( 1 )
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 
 [node name="KinBodyShip3" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -5 )
-script = ExtResource( 2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 45 )
+script = ExtResource( 5 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip3"]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
-mesh = ExtResource( 4 )
+mesh = ExtResource( 16 )
 material/0 = null
 material/1 = null
 material/2 = null
@@ -189,16 +195,16 @@ visible = false
 amount = 4
 process_material = SubResource( 4 )
 draw_passes = 2
-draw_pass_1 = ExtResource( 14 )
-draw_pass_2 = ExtResource( 12 )
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
 
 [node name="KinBodyShip2" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 35 )
-script = ExtResource( 2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 45 )
+script = ExtResource( 5 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip2"]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
-mesh = ExtResource( 4 )
+mesh = ExtResource( 16 )
 material/0 = null
 material/1 = null
 material/2 = null
@@ -222,16 +228,16 @@ visible = false
 amount = 4
 process_material = SubResource( 4 )
 draw_passes = 2
-draw_pass_1 = ExtResource( 14 )
-draw_pass_2 = ExtResource( 12 )
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
 
 [node name="KinBodyShip4" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 35 )
-script = ExtResource( 2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 45 )
+script = ExtResource( 5 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip4"]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
-mesh = ExtResource( 4 )
+mesh = ExtResource( 16 )
 material/0 = null
 material/1 = null
 material/2 = null
@@ -255,15 +261,48 @@ visible = false
 amount = 4
 process_material = SubResource( 4 )
 draw_passes = 2
-draw_pass_1 = ExtResource( 14 )
-draw_pass_2 = ExtResource( 12 )
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
+
+[node name="KinBodyShip5" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 45 )
+script = ExtResource( 5 )
+
+[node name="Sail ship" type="MeshInstance" parent="KinBodyShip5"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+mesh = ExtResource( 16 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+material/9 = null
+material/10 = null
+material/11 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="KinBodyShip5"]
+transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
+shape = SubResource( 2 )
+
+[node name="Smoke" type="Particles" parent="KinBodyShip5"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+visible = false
+amount = 4
+process_material = SubResource( 4 )
+draw_passes = 2
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
 
 [node name="VikingShip" type="KinematicBody" parent="."]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -15, 0, -5 )
-script = ExtResource( 18 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -25, 0, -35 )
+script = ExtResource( 9 )
 
 [node name="MeshInstance" type="MeshInstance" parent="VikingShip"]
-mesh = ExtResource( 19 )
+mesh = ExtResource( 15 )
 material/0 = null
 material/1 = null
 material/2 = null
@@ -281,8 +320,86 @@ visible = false
 amount = 4
 process_material = SubResource( 7 )
 draw_passes = 2
-draw_pass_1 = ExtResource( 14 )
-draw_pass_2 = ExtResource( 12 )
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
+
+[node name="VikingShip2" type="KinematicBody" parent="."]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, -5, 0, -35 )
+script = ExtResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="VikingShip2"]
+mesh = ExtResource( 15 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="VikingShip2"]
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
+shape = SubResource( 17 )
+
+[node name="Smoke" type="Particles" parent="VikingShip2"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+visible = false
+amount = 4
+process_material = SubResource( 7 )
+draw_passes = 2
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
+
+[node name="VikingShip3" type="KinematicBody" parent="."]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 15, 0, -35 )
+script = ExtResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="VikingShip3"]
+mesh = ExtResource( 15 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="VikingShip3"]
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
+shape = SubResource( 18 )
+
+[node name="Smoke" type="Particles" parent="VikingShip3"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+visible = false
+amount = 4
+process_material = SubResource( 7 )
+draw_passes = 2
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
+
+[node name="VikingShip4" type="KinematicBody" parent="."]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 35, 0, -35 )
+script = ExtResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="VikingShip4"]
+mesh = ExtResource( 15 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="VikingShip4"]
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
+shape = SubResource( 19 )
+
+[node name="Smoke" type="Particles" parent="VikingShip4"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+visible = false
+amount = 4
+process_material = SubResource( 7 )
+draw_passes = 2
+draw_pass_1 = ExtResource( 11 )
+draw_pass_2 = ExtResource( 2 )
 
 [node name="GUI" type="Control" parent="."]
 anchor_right = 1.0
@@ -298,7 +415,7 @@ margin_left = -30.0
 margin_right = 30.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 14 )
 text = "NORTH"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -313,7 +430,7 @@ margin_left = -30.0
 margin_top = -60.0
 margin_right = 30.0
 rect_min_size = Vector2( 60, 60 )
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 14 )
 text = "SOUTH"
 
 [node name="Button_W" type="Button" parent="GUI"]
@@ -323,7 +440,7 @@ margin_top = -30.0
 margin_right = 60.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 60, 60 )
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 14 )
 text = "WEST"
 
 [node name="Button_E" type="Button" parent="GUI"]
@@ -335,7 +452,7 @@ margin_left = -60.0
 margin_top = -30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 60, 60 )
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 14 )
 text = "EAST"
 
 [node name="ProgressWind" type="ProgressBar" parent="GUI"]
@@ -352,7 +469,7 @@ __meta__ = {
 [node name="WindReady" type="Sprite" parent="GUI"]
 position = Vector2( 24, 51 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 3 )
+texture = ExtResource( 10 )
 
 [node name="GoalCount" type="Label" parent="GUI"]
 anchor_left = 1.0
@@ -476,7 +593,7 @@ margin_top = -50.0
 margin_right = 65.0
 margin_bottom = -5.0
 rect_min_size = Vector2( 60, 45 )
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 14 )
 text = "Retry"
 
 [node name="Button_Menu" type="Button" parent="GUI"]
@@ -487,80 +604,80 @@ margin_top = -50.0
 margin_right = 135.0
 margin_bottom = -5.0
 rect_min_size = Vector2( 60, 45 )
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 14 )
 text = "Menu"
 
 [node name="Terrain" type="Node" parent="."]
 
-[node name="WaterMesh" parent="Terrain" instance=ExtResource( 13 )]
+[node name="WaterMesh" parent="Terrain" instance=ExtResource( 18 )]
 
-[node name="RockCluster" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 35 )
+[node name="RockCluster" parent="Terrain" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 45 )
 
-[node name="RockCluster5" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 35 )
+[node name="RockCluster5" parent="Terrain" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 35 )
 
-[node name="RockCluster6" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 35 )
+[node name="PortTown" parent="Terrain" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -45 )
 
-[node name="RockCluster2" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -5 )
+[node name="PortTown2" parent="Terrain" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -45 )
 
-[node name="RockCluster3" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 25 )
+[node name="PortTown3" parent="Terrain" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -45 )
 
-[node name="RockCluster9" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 5 )
+[node name="PortTown4" parent="Terrain" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, -45 )
 
-[node name="RockCluster7" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 25 )
+[node name="SandIsland" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -35, -2.5, -45 )
 
-[node name="RockCluster8" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 45 )
+[node name="SandIsland3" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -25, -2.5, -15 )
 
-[node name="RockCluster4" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, -5 )
+[node name="SandIsland4" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -15, -2.5, -45 )
 
-[node name="RockCluster11" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 5 )
+[node name="SandIsland5" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -5, -2.5, 15 )
 
-[node name="RockCluster12" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -15 )
+[node name="SandIsland6" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -45, -2.5, -45 )
 
-[node name="PortTown" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -15 )
+[node name="SandIsland7" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 5, -2.5, -45 )
 
-[node name="PortTown3" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 35 )
+[node name="SandIsland8" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 15, -2.5, -5 )
 
-[node name="PortTown4" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 45 )
+[node name="SandIsland9" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 25, -2.5, -45 )
 
-[node name="SandIsland" parent="Terrain" instance=ExtResource( 16 )]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -35, -2.5, -5 )
+[node name="SandIsland10" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 35, -2.5, 35 )
 
-[node name="SandIsland2" parent="Terrain" instance=ExtResource( 16 )]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -5, -2.5, -5 )
+[node name="SandIsland11" parent="Terrain" instance=ExtResource( 17 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 45, -2.5, -45 )
 
 [node name="Audio" type="Node" parent="."]
 
 [node name="OceanAmbience" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource( 9 )
+stream = ExtResource( 7 )
 volume_db = -10.0
 autoplay = true
 
 [node name="WindGust" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource( 5 )
+stream = ExtResource( 3 )
 
 [node name="WoodCrash" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource( 6 )
+stream = ExtResource( 1 )
 volume_db = -20.0
 
 [node name="Bubbles" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource( 7 )
+stream = ExtResource( 13 )
 
 [node name="Sails" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource( 10 )
+stream = ExtResource( 12 )
 [connection signal="pressed" from="GUI/Button_N" to="." method="_on_Button_N_pressed"]
 [connection signal="pressed" from="GUI/Button_S" to="." method="_on_Button_S_pressed"]
 [connection signal="pressed" from="GUI/Button_W" to="." method="_on_Button_W_pressed"]

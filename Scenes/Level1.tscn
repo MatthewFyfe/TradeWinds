@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Ship.gd" type="Script" id=2]
@@ -17,16 +17,13 @@
 [ext_resource path="res://Scenes/Prefabs/RockCluster.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Fonts/Marcellus-Regular.ttf" type="DynamicFontData" id=16]
 [ext_resource path="res://Scenes/WaterMesh.tscn" type="PackedScene" id=17]
-[ext_resource path="res://Scenes/Prefabs/Smoke.tscn" type="PackedScene" id=18]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="CylinderShape" id=2]
 
-[sub_resource type="CylinderShape" id=3]
-
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=3]
 code = "shader_type particles;
 
 float rand_from_seed(in uint seed) {
@@ -70,75 +67,48 @@ void vertex() {
   }
 }"
 
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 
-[sub_resource type="DynamicFontData" id=6]
+[sub_resource type="DynamicFontData" id=5]
 font_path = "res://Fonts/Marcellus-Regular.ttf"
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=6]
 size = 25
-font_data = SubResource( 6 )
+font_data = SubResource( 5 )
 
-[sub_resource type="DynamicFontData" id=8]
+[sub_resource type="DynamicFontData" id=7]
 font_path = "res://Fonts/Marcellus-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+size = 30
+font_data = SubResource( 7 )
 
 [sub_resource type="DynamicFont" id=9]
-size = 30
-font_data = SubResource( 8 )
-
-[sub_resource type="DynamicFont" id=10]
 font_data = ExtResource( 16 )
 
-[sub_resource type="DynamicFontData" id=11]
+[sub_resource type="DynamicFontData" id=10]
 font_path = "res://Fonts/Marcellus-Regular.ttf"
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=11]
 size = 30
-font_data = SubResource( 11 )
+font_data = SubResource( 10 )
 
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="DynamicFont" id=12]
 font_data = ExtResource( 16 )
 
 [node name="BJam2020" type="Spatial"]
 script = ExtResource( 1 )
-goalLimit = 3
-active_ships = 3
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 50, 40 )
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 50, 47 )
 environment = SubResource( 1 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-
-[node name="KinBodyShip" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5 )
-script = ExtResource( 2 )
-
-[node name="Sail ship" type="MeshInstance" parent="KinBodyShip"]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
-mesh = ExtResource( 4 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-material/4 = null
-material/5 = null
-material/6 = null
-material/7 = null
-material/8 = null
-material/9 = null
-material/10 = null
-material/11 = null
-
-[node name="CollisionShape" type="CollisionShape" parent="KinBodyShip"]
-transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
-shape = SubResource( 2 )
-
-[node name="Smoke" parent="KinBodyShip" instance=ExtResource( 18 )]
+light_energy = 2.0
 
 [node name="KinBodyShip2" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 5 )
 script = ExtResource( 2 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip2"]
@@ -159,19 +129,19 @@ material/11 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="KinBodyShip2"]
 transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="Smoke" type="Particles" parent="KinBodyShip2"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 visible = false
 amount = 4
-process_material = SubResource( 5 )
+process_material = SubResource( 4 )
 draw_passes = 2
 draw_pass_1 = ExtResource( 14 )
 draw_pass_2 = ExtResource( 13 )
 
 [node name="KinBodyShip3" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 5 )
 script = ExtResource( 2 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip3"]
@@ -192,13 +162,13 @@ material/11 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="KinBodyShip3"]
 transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="Smoke" type="Particles" parent="KinBodyShip3"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 visible = false
 amount = 4
-process_material = SubResource( 5 )
+process_material = SubResource( 4 )
 draw_passes = 2
 draw_pass_1 = ExtResource( 14 )
 draw_pass_2 = ExtResource( 13 )
@@ -257,6 +227,28 @@ rect_min_size = Vector2( 60, 60 )
 custom_fonts/font = ExtResource( 8 )
 text = "EAST"
 
+[node name="Button_Retry" type="Button" parent="GUI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = -50.0
+margin_right = 65.0
+margin_bottom = -5.0
+rect_min_size = Vector2( 60, 45 )
+custom_fonts/font = ExtResource( 8 )
+text = "Retry"
+
+[node name="Button_Menu" type="Button" parent="GUI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 75.0
+margin_top = -50.0
+margin_right = 135.0
+margin_bottom = -5.0
+rect_min_size = Vector2( 60, 45 )
+custom_fonts/font = ExtResource( 8 )
+text = "Menu"
+
 [node name="ProgressWind" type="ProgressBar" parent="GUI"]
 margin_top = 100.0
 margin_right = 100.0
@@ -279,7 +271,7 @@ anchor_right = 1.0
 margin_left = -127.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 6 )
 text = "Goals: 0/0"
 align = 1
 valign = 1
@@ -316,7 +308,7 @@ margin_left = -66.5
 margin_top = -19.5
 margin_right = 66.5
 margin_bottom = 19.5
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 8 )
 text = "YOU WIN"
 
 [node name="MenuButton" type="Button" parent="GUI/WinPopup"]
@@ -328,7 +320,7 @@ margin_left = -64.5
 margin_top = -13.5
 margin_right = 64.5
 margin_bottom = 13.5
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 9 )
 text = "Return to Menu"
 
 [node name="LosePopup" type="Popup" parent="GUI"]
@@ -360,7 +352,7 @@ anchor_right = 0.5
 margin_left = -71.5
 margin_right = 71.5
 margin_bottom = 39.0
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 11 )
 text = "YOU LOST"
 
 [node name="MenuButton" type="Button" parent="GUI/LosePopup"]
@@ -372,7 +364,7 @@ margin_left = -64.5
 margin_top = -13.5
 margin_right = 64.5
 margin_bottom = 13.5
-custom_fonts/font = SubResource( 13 )
+custom_fonts/font = SubResource( 12 )
 text = "Return to Menu"
 
 [node name="MenuButton2" type="Button" parent="GUI/LosePopup"]
@@ -384,38 +376,48 @@ margin_left = -64.5
 margin_top = -13.5
 margin_right = 64.5
 margin_bottom = 13.5
-custom_fonts/font = SubResource( 13 )
+custom_fonts/font = SubResource( 12 )
 text = "Try again"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Terrain" type="Node" parent="."]
 
 [node name="WaterMesh" parent="Terrain" instance=ExtResource( 17 )]
 
 [node name="SandIsland" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 15, -2.5, 5 )
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -45, -2.5, 5 )
+
+[node name="SandIsland3" parent="Terrain" instance=ExtResource( 11 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -25, -2.5, 25 )
+
+[node name="SandIsland4" parent="Terrain" instance=ExtResource( 11 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 35, -2.5, 25 )
+
+[node name="SandIsland5" parent="Terrain" instance=ExtResource( 11 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -5, -2.5, -25 )
 
 [node name="SandIsland2" parent="Terrain" instance=ExtResource( 11 )]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -25, -2.5, 5 )
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 45, -2.5, 5 )
 
 [node name="RockCluster" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -35 )
 
 [node name="RockCluster3" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 25 )
-
-[node name="RockCluster4" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -25 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 45 )
 
 [node name="RockCluster5" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 15 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 35 )
 
 [node name="RockCluster6" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 15 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 35 )
 
 [node name="RockCluster2" parent="Terrain" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -15 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 5 )
 
 [node name="PortTown" parent="Terrain" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 5 )
 
 [node name="Audio" type="Node" parent="."]
 
@@ -440,6 +442,8 @@ stream = ExtResource( 10 )
 [connection signal="pressed" from="GUI/Button_S" to="." method="_on_Button_S_pressed"]
 [connection signal="pressed" from="GUI/Button_W" to="." method="_on_Button_W_pressed"]
 [connection signal="pressed" from="GUI/Button_E" to="." method="_on_Button_E_pressed"]
+[connection signal="pressed" from="GUI/Button_Retry" to="." method="_on_Button_Retry_pressed"]
+[connection signal="pressed" from="GUI/Button_Menu" to="." method="_on_Button_Menu_pressed"]
 [connection signal="pressed" from="GUI/WinPopup/MenuButton" to="." method="_on_MenuButton_pressed"]
 [connection signal="pressed" from="GUI/LosePopup/MenuButton" to="." method="_on_MenuButton_pressed"]
 [connection signal="pressed" from="GUI/LosePopup/MenuButton2" to="." method="_on_MenuButton2_pressed"]
