@@ -34,7 +34,7 @@ margin_right = 250.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 100, 100 )
 custom_fonts/font = SubResource( 1 )
-text = "DEMO"
+text = "TUTORIAL"
 __meta__ = {
 "_edit_use_anchors_": false
 }

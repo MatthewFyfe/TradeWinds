@@ -84,7 +84,7 @@ func blow_direction(direction):
 	current_position = transform.origin
 	#current_position.x = floor(current_position.x / 5) * 5
 	if(!notInPort):
-		get_parent().add_goalCount(-1)
+		#get_parent().add_goalCount(-1)
 		notInPort = true
 		
 	windGust.play()

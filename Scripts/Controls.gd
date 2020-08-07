@@ -91,3 +91,11 @@ func _on_MenuButton_pressed():
 
 func _on_MenuButton2_pressed():
 	get_tree().reload_current_scene()
+
+
+func _on_Button_Menu_pressed():
+	get_tree().change_scene("res://Scenes/MainMenu.tscn")
+
+
+func _on_Button_Retry_pressed():
+	get_tree().reload_current_scene()

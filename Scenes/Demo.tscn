@@ -117,7 +117,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 25 )
 script = ExtResource( 2 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip"]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+transform = Transform( -1.5, 0, -5.84122e-07, 0, 1.5, 0, 5.84122e-07, 0, -1.5, 0, 0, 0 )
 mesh = ExtResource( 4 )
 material/0 = null
 material/1 = null
@@ -143,7 +143,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 25 )
 script = ExtResource( 2 )
 
 [node name="Sail ship" type="MeshInstance" parent="KinBodyShip2"]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+transform = Transform( -1.5, 0, -5.84122e-07, 0, 1.5, 0, 5.84122e-07, 0, -1.5, 0, 0, 0 )
 mesh = ExtResource( 4 )
 material/0 = null
 material/1 = null
@@ -397,6 +397,24 @@ margin_bottom = -5.0
 rect_min_size = Vector2( 60, 45 )
 custom_fonts/font = ExtResource( 8 )
 text = "Menu"
+
+[node name="TutorialTxt" type="RichTextLabel" parent="GUI"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -402.0
+margin_top = -232.0
+margin_right = 413.0
+margin_bottom = 68.0
+text = "Use the arrow keys or click on the wind buttons to create a gust from that direction. The meter in the top left shows when your next gust is ready.
+
+Sandbars are safe to crash into, you will bounce off. Rocks and viking long ships will damage you however! Don't sail off the edge of the world either.
+
+Try and guide all the sail ships to the ports marked with a star. Ships in port will \"stick\" unless the wind blows the opposite direction and unmoors them. The number of ships in port is show in the top right."
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Terrain" type="Node" parent="."]
 
