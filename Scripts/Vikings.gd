@@ -4,7 +4,6 @@ var move_speed = 10
 var target_position = transform.origin
 var current_position = transform.origin
 var shipRegex = RegEx.new()
-var vikRegex = RegEx.new()
 var notInPort = true
 var shipHP = 2
 
@@ -21,7 +20,6 @@ var levelSizeZ = 50
 func _ready():
 	add_to_group("ships")
 	shipRegex.compile("Ship*")
-	vikRegex.compile("Viking")
 	
 #Every physics tick
 func _physics_process(delta):
@@ -44,7 +42,7 @@ func _physics_process(delta):
 	#Has Davy Jones got us?
 	if(transform.origin.y <= -5):
 		print("glub")
-		get_parent().active_ships(-1)
+		#get_parent().active_ships(-1)
 		queue_free()
 	
 	#Called multiple times to hacky speed up distance per tick
@@ -65,11 +63,6 @@ func _physics_process(delta):
 		elif (shipRegex.search(whatWeHit)):
 			#Go back to last grid location
 			target_position = current_position
-			if (vikRegex.search(whatWeHit)):
-				#Something bad happens (we sink or start smoking)
-				shipHP -= 1
-				find_node("Smoke").show()
-				woodCrash.play()
 		elif whatWeHit == "Rocks":
 			#Something bad happens (we sink or start smoking)
 			shipHP -= 1
@@ -79,7 +72,7 @@ func _physics_process(delta):
 		elif whatWeHit == "Port":
 			#Success! Update goal count
 			if(notInPort):
-				get_parent().add_goalCount(1)
+				#get_parent().add_goalCount(1)
 				notInPort = false
 				current_position = get_slide_collision(0).collider.get_parent().transform.origin
 			else:

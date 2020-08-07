@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Cloud8.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://Assets/Cloud1.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Scripts/Vikings.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Viking boat.obj" type="ArrayMesh" id=4]
+
+[sub_resource type="BoxShape" id=13]
+extents = Vector3( 2, 2, 2 )
+
+[sub_resource type="Shader" id=3]
+code = "shader_type particles;
+
+float rand_from_seed(in uint seed) {
+  int k;
+  int s = int(seed);
+  if (s == 0)
+    s = 305420679;
+  k = s / 127773;
+  s = 16807 * (s - k * 127773) - 2836 * k;
+  if (s < 0)
+    s += 2147483647;
+  seed = uint(s);
+  return float(seed % uint(65536)) / 65535.0;
+}
+
+uint hash(uint x) {
+  x = ((x >> uint(16)) ^ x) * uint(73244475);
+  x = ((x >> uint(16)) ^ x) * uint(73244475);
+  x = (x >> uint(16)) ^ x;
+  return x;
+}
+
+void vertex() {
+  if (RESTART) {
+    //Initialization code goes here
+	uint alt_seed1 = hash(NUMBER + uint(1) + RANDOM_SEED);
+	uint alt_seed2 = hash(NUMBER + uint(27) + RANDOM_SEED);
+	uint alt_seed3 = hash(NUMBER + uint(43) + RANDOM_SEED);
+	uint alt_seed4 = hash(NUMBER + uint(111) + RANDOM_SEED);
+	
+	CUSTOM.x = rand_from_seed(alt_seed1);
+	vec3 position = vec3(rand_from_seed(alt_seed2) * 0.9 - 0.5,
+                     rand_from_seed(alt_seed3) * 1.0 - 0.0,
+                     rand_from_seed(alt_seed4) * 0.9 - 0.5);
+
+	TRANSFORM[3].xyz = position * 20.0;
+	
+	VELOCITY.y = cos(TIME + CUSTOM.x * 6.28) * 4.0 + 6.0;
+  } else {
+    //per-frame code goes here
+  }
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+
+[node name="VikingShip" type="KinematicBody"]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 15, 0, -5 )
+script = ExtResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = ExtResource( 4 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 13 )
+
+[node name="Smoke" type="Particles" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+visible = false
+amount = 4
+process_material = SubResource( 4 )
+draw_passes = 2
+draw_pass_1 = ExtResource( 2 )
+draw_pass_2 = ExtResource( 1 )

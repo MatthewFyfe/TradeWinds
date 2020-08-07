@@ -4,6 +4,7 @@ extends Spatial
 var windTimer = 0
 var goalCount = 0
 export var goalLimit = 2
+export var active_ships = 2
 
 onready var progressWind = find_node("ProgressWind")
 onready var windReady = find_node("WindReady")
@@ -24,12 +25,20 @@ func _physics_process(delta):
 	#Update wind progress bar
 	progressWind.value = 100-windTimer
 	#Update goal counter
-	find_node("GoalCount").set_text("Goal " + str(goalCount))
+	find_node("GoalCount").set_text("Goal " + str(goalCount) + "/" + str(goalLimit))
 	#Check win condition
 	if(goalCount >= goalLimit):
-		print("win")
-		var popup = find_node("Popup")
+		#print("win")
+		var popup = find_node("WinPopup")
 		popup.show()
+	#Check loss condition
+	if(active_ships < goalLimit):
+		#print("lost")
+		var popup = find_node("LosePopup")
+		popup.show()
+
+func active_ships(value):
+	active_ships += value
 
 #Check for input (built in function)
 func _input(event):
@@ -74,3 +83,11 @@ func _on_Button_E_pressed():
 
 func add_goalCount(value):
 	goalCount += value
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Scenes/MainMenu.tscn")
+
+
+func _on_MenuButton2_pressed():
+	get_tree().reload_current_scene()

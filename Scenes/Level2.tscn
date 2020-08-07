@@ -1,0 +1,418 @@
+[gd_scene load_steps=30 format=2]
+
+[ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Ship.gd" type="Script" id=2]
+[ext_resource path="res://Assets/windIcon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sail ship.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://Assets/Audio/WindA.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Audio/WoodCrash.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Audio/Bubbles.wav" type="AudioStream" id=7]
+[ext_resource path="res://WindButtonFont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Assets/Audio/BeachAmbience.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Audio/Sails.wav" type="AudioStream" id=10]
+[ext_resource path="res://Scenes/Prefabs/RockCluster.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Assets/Cloud8.obj" type="ArrayMesh" id=12]
+[ext_resource path="res://Scenes/WaterMesh.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Assets/Cloud1.obj" type="ArrayMesh" id=14]
+[ext_resource path="res://Scenes/Prefabs/PortTown.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/Prefabs/SandIsland.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Fonts/Marcellus-Regular.ttf" type="DynamicFontData" id=17]
+
+[sub_resource type="Environment" id=1]
+ambient_light_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="CylinderShape" id=2]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type particles;
+
+float rand_from_seed(in uint seed) {
+  int k;
+  int s = int(seed);
+  if (s == 0)
+    s = 305420679;
+  k = s / 127773;
+  s = 16807 * (s - k * 127773) - 2836 * k;
+  if (s < 0)
+    s += 2147483647;
+  seed = uint(s);
+  return float(seed % uint(65536)) / 65535.0;
+}
+
+uint hash(uint x) {
+  x = ((x >> uint(16)) ^ x) * uint(73244475);
+  x = ((x >> uint(16)) ^ x) * uint(73244475);
+  x = (x >> uint(16)) ^ x;
+  return x;
+}
+
+void vertex() {
+  if (RESTART) {
+    //Initialization code goes here
+	uint alt_seed1 = hash(NUMBER + uint(1) + RANDOM_SEED);
+	uint alt_seed2 = hash(NUMBER + uint(27) + RANDOM_SEED);
+	uint alt_seed3 = hash(NUMBER + uint(43) + RANDOM_SEED);
+	uint alt_seed4 = hash(NUMBER + uint(111) + RANDOM_SEED);
+	
+	CUSTOM.x = rand_from_seed(alt_seed1);
+	vec3 position = vec3(rand_from_seed(alt_seed2) * 0.9 - 0.5,
+                     rand_from_seed(alt_seed3) * 1.0 - 0.0,
+                     rand_from_seed(alt_seed4) * 0.9 - 0.5);
+
+	TRANSFORM[3].xyz = position * 20.0;
+	
+	VELOCITY.y = cos(TIME + CUSTOM.x * 6.28) * 4.0 + 6.0;
+  } else {
+    //per-frame code goes here
+  }
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+
+[sub_resource type="DynamicFontData" id=5]
+font_path = "res://Fonts/Marcellus-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=6]
+size = 25
+font_data = SubResource( 5 )
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://Fonts/Marcellus-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+size = 30
+font_data = SubResource( 7 )
+
+[sub_resource type="DynamicFont" id=9]
+font_data = ExtResource( 17 )
+
+[sub_resource type="DynamicFontData" id=10]
+font_path = "res://Fonts/Marcellus-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=11]
+size = 30
+font_data = SubResource( 10 )
+
+[sub_resource type="DynamicFont" id=12]
+font_data = ExtResource( 17 )
+
+[node name="BJam2020" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 50, 40 )
+environment = SubResource( 1 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+
+[node name="KinBodyShip" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -5 )
+script = ExtResource( 2 )
+
+[node name="Sail ship" type="MeshInstance" parent="KinBodyShip"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+mesh = ExtResource( 4 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+material/9 = null
+material/10 = null
+material/11 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="KinBodyShip"]
+transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
+shape = SubResource( 2 )
+
+[node name="Smoke" type="Particles" parent="KinBodyShip"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+visible = false
+amount = 4
+process_material = SubResource( 4 )
+draw_passes = 2
+draw_pass_1 = ExtResource( 14 )
+draw_pass_2 = ExtResource( 12 )
+
+[node name="KinBodyShip2" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 35 )
+script = ExtResource( 2 )
+
+[node name="Sail ship" type="MeshInstance" parent="KinBodyShip2"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+mesh = ExtResource( 4 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+material/9 = null
+material/10 = null
+material/11 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="KinBodyShip2"]
+transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 1, 0 )
+shape = SubResource( 2 )
+
+[node name="Smoke" type="Particles" parent="KinBodyShip2"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+visible = false
+amount = 4
+process_material = SubResource( 4 )
+draw_passes = 2
+draw_pass_1 = ExtResource( 14 )
+draw_pass_2 = ExtResource( 12 )
+
+[node name="GUI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_N" type="Button" parent="GUI"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -30.0
+margin_right = 30.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+custom_fonts/font = ExtResource( 8 )
+text = "NORTH"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_S" type="Button" parent="GUI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -30.0
+margin_top = -60.0
+margin_right = 30.0
+rect_min_size = Vector2( 60, 60 )
+custom_fonts/font = ExtResource( 8 )
+text = "SOUTH"
+
+[node name="Button_W" type="Button" parent="GUI"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -30.0
+margin_right = 60.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 60, 60 )
+custom_fonts/font = ExtResource( 8 )
+text = "WEST"
+
+[node name="Button_E" type="Button" parent="GUI"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -60.0
+margin_top = -30.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 60, 60 )
+custom_fonts/font = ExtResource( 8 )
+text = "EAST"
+
+[node name="ProgressWind" type="ProgressBar" parent="GUI"]
+margin_top = 100.0
+margin_right = 100.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 100, 50 )
+rect_rotation = -90.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WindReady" type="Sprite" parent="GUI"]
+position = Vector2( 24, 51 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="GoalCount" type="Label" parent="GUI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -127.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+custom_fonts/font = SubResource( 6 )
+text = "Goals: 0/0"
+align = 1
+valign = 1
+
+[node name="WinPopup" type="Popup" parent="GUI"]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -100.0
+margin_right = 250.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 500, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="GUI/WinPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.298039, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GUI/WinPopup"]
+anchor_left = 0.5
+anchor_top = 0.25
+anchor_right = 0.5
+anchor_bottom = 0.25
+margin_left = -66.5
+margin_top = -19.5
+margin_right = 66.5
+margin_bottom = 19.5
+custom_fonts/font = SubResource( 8 )
+text = "YOU WIN"
+
+[node name="MenuButton" type="Button" parent="GUI/WinPopup"]
+anchor_left = 0.5
+anchor_top = 0.75
+anchor_right = 0.5
+anchor_bottom = 0.75
+margin_left = -64.5
+margin_top = -13.5
+margin_right = 64.5
+margin_bottom = 13.5
+custom_fonts/font = SubResource( 9 )
+text = "Return to Menu"
+
+[node name="LosePopup" type="Popup" parent="GUI"]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -100.0
+margin_right = 250.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 500, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="GUI/LosePopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.298039, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GUI/LosePopup"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -71.5
+margin_right = 71.5
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 11 )
+text = "YOU LOST"
+
+[node name="MenuButton" type="Button" parent="GUI/LosePopup"]
+anchor_left = 0.5
+anchor_top = 0.75
+anchor_right = 0.5
+anchor_bottom = 0.75
+margin_left = -64.5
+margin_top = -13.5
+margin_right = 64.5
+margin_bottom = 13.5
+custom_fonts/font = SubResource( 12 )
+text = "Return to Menu"
+
+[node name="MenuButton2" type="Button" parent="GUI/LosePopup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.5
+margin_top = -13.5
+margin_right = 64.5
+margin_bottom = 13.5
+custom_fonts/font = SubResource( 12 )
+text = "Try again"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Terrain" type="Node" parent="."]
+
+[node name="WaterMesh" parent="Terrain" instance=ExtResource( 13 )]
+
+[node name="SandIsland" parent="Terrain" instance=ExtResource( 16 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -25, -2.5, 25 )
+
+[node name="SandIsland3" parent="Terrain" instance=ExtResource( 16 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 35, -2.5, 25 )
+
+[node name="SandIsland2" parent="Terrain" instance=ExtResource( 16 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -25, -2.5, 5 )
+
+[node name="SandIsland4" parent="Terrain" instance=ExtResource( 16 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -25, -2.5, -15 )
+
+[node name="RockCluster" parent="Terrain" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 35 )
+
+[node name="RockCluster2" parent="Terrain" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -5 )
+
+[node name="RockCluster3" parent="Terrain" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 15 )
+
+[node name="RockCluster4" parent="Terrain" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, -35 )
+
+[node name="PortTown" parent="Terrain" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 35 )
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="OceanAmbience" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 9 )
+volume_db = -10.0
+autoplay = true
+
+[node name="WindGust" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 5 )
+
+[node name="WoodCrash" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 6 )
+volume_db = -20.0
+
+[node name="Bubbles" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 7 )
+
+[node name="Sails" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 10 )
+[connection signal="pressed" from="GUI/Button_N" to="." method="_on_Button_N_pressed"]
+[connection signal="pressed" from="GUI/Button_S" to="." method="_on_Button_S_pressed"]
+[connection signal="pressed" from="GUI/Button_W" to="." method="_on_Button_W_pressed"]
+[connection signal="pressed" from="GUI/Button_E" to="." method="_on_Button_E_pressed"]
+[connection signal="pressed" from="GUI/WinPopup/MenuButton" to="." method="_on_MenuButton_pressed"]
+[connection signal="pressed" from="GUI/LosePopup/MenuButton" to="." method="_on_MenuButton_pressed"]
+[connection signal="pressed" from="GUI/LosePopup/MenuButton2" to="." method="_on_MenuButton2_pressed"]
